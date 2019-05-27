@@ -75,10 +75,13 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
     Expression activeSkipExpression = null;
     Expression activeAssigneeExpression = null;
     Expression activeOwnerExpression = null;
+    Expression activeOrgExpression = null;
     Set<Expression> activeCandidateUserExpressions = null;
     Set<Expression> activeCandidateGroupExpressions = null;
+    Set<Expression> activeCandidateOrgExpressions = null;
     
     if (Context.getProcessEngineConfiguration().isEnableProcessDefinitionInfoCache()) {
+      // 读取流程xml定义中的节点数据
       ObjectNode taskElementProperties = Context.getBpmnOverrideElementProperties(userTaskId, execution.getProcessDefinitionId());
       activeNameExpression = getActiveValue(taskDefinition.getNameExpression(), DynamicBpmnConstants.USER_TASK_NAME, taskElementProperties);
       taskDefinition.setNameExpression(activeNameExpression);
@@ -98,10 +101,18 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
       taskDefinition.setAssigneeExpression(activeAssigneeExpression);
       activeOwnerExpression = getActiveValue(taskDefinition.getOwnerExpression(), DynamicBpmnConstants.USER_TASK_OWNER, taskElementProperties);
       taskDefinition.setOwnerExpression(activeOwnerExpression);
+      activeOrgExpression = getActiveValue(taskDefinition.getOwnerExpression(), DynamicBpmnConstants.USER_TASK_ORG, taskElementProperties);
+      taskDefinition.setOrgExpression(activeOrgExpression);
+
+      // 读取流程定义中的节点为serTask中CandidateUsers定义的值
       activeCandidateUserExpressions = getActiveValueSet(taskDefinition.getCandidateUserIdExpressions(), DynamicBpmnConstants.USER_TASK_CANDIDATE_USERS, taskElementProperties);
       taskDefinition.setCandidateUserIdExpressions(activeCandidateUserExpressions);
+      // 读取流程定义中的节点为serTask中CandidateGroups定义的值
       activeCandidateGroupExpressions = getActiveValueSet(taskDefinition.getCandidateGroupIdExpressions(), DynamicBpmnConstants.USER_TASK_CANDIDATE_GROUPS, taskElementProperties);
       taskDefinition.setCandidateGroupIdExpressions(activeCandidateGroupExpressions);
+
+      activeCandidateOrgExpressions = getActiveValueSet(taskDefinition.getCandidateOrgExpressions(), DynamicBpmnConstants.USER_TASK_CANDIDATE_ORGS, taskElementProperties);
+      taskDefinition.setCandidateOrgExpressions(activeCandidateOrgExpressions);
       
     } else {
       activeNameExpression = taskDefinition.getNameExpression();
@@ -113,8 +124,10 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
       activeSkipExpression = taskDefinition.getSkipExpression();
       activeAssigneeExpression = taskDefinition.getAssigneeExpression();
       activeOwnerExpression = taskDefinition.getOwnerExpression();
+      activeOrgExpression = taskDefinition.getOrgExpression();
       activeCandidateUserExpressions = taskDefinition.getCandidateUserIdExpressions();
       activeCandidateGroupExpressions = taskDefinition.getCandidateGroupIdExpressions();
+      activeCandidateOrgExpressions = taskDefinition.getCandidateOrgExpressions();
     }
     
     task.setTaskDefinition(taskDefinition);
@@ -205,8 +218,8 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
         SkipExpressionUtil.shouldSkipFlowElement(execution, activeSkipExpression);
     
     if (!skipUserTask) {
-      handleAssignments(activeAssigneeExpression, activeOwnerExpression, activeCandidateUserExpressions, 
-        activeCandidateGroupExpressions, task, execution);
+      handleAssignments(activeAssigneeExpression, activeOwnerExpression, activeOrgExpression, activeCandidateUserExpressions,
+        activeCandidateGroupExpressions, activeCandidateOrgExpressions, task, execution);
     }
 
     task.fireEvent(TaskListener.EVENTNAME_CREATE);
@@ -229,8 +242,9 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  protected void handleAssignments(Expression assigneeExpression, Expression ownerExpression, Set<Expression> candidateUserExpressions,
-      Set<Expression> candidateGroupExpressions, TaskEntity task, ActivityExecution execution) {
+  protected void handleAssignments(Expression assigneeExpression, Expression ownerExpression, Expression activeOrgExpression,
+                                   Set<Expression> candidateUserExpressions, Set<Expression> candidateGroupExpressions,
+                                   Set<Expression> candidateOrgExpressions, TaskEntity task, ActivityExecution execution) {
     
     if (assigneeExpression != null) {
       Object assigneeExpressionValue = assigneeExpression.getValue(execution);
@@ -250,6 +264,15 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
       task.setOwner(ownerValue);
     }
 
+    if (activeOrgExpression != null) {
+      Object orgExpressionValue = activeOrgExpression.getValue(execution);
+      String orgValue = null;
+      if (orgExpressionValue != null) {
+        orgValue = orgExpressionValue.toString();
+      }
+      task.setOwner(orgValue);
+    }
+
     if (candidateGroupExpressions != null && !candidateGroupExpressions.isEmpty()) {
       for (Expression groupIdExpr : candidateGroupExpressions) {
         Object value = groupIdExpr.getValue(execution);
@@ -264,6 +287,7 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
       }
     }
 
+
     if (candidateUserExpressions != null && !candidateUserExpressions.isEmpty()) {
       for (Expression userIdExpr : candidateUserExpressions) {
         Object value = userIdExpr.getValue(execution);
@@ -272,6 +296,20 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
           task.addCandidateUsers(candiates);
         } else if (value instanceof Collection) {
           task.addCandidateUsers((Collection) value);
+        } else {
+          throw new ActivitiException("Expression did not resolve to a string or collection of strings");
+        }
+      }
+    }
+
+    if (candidateOrgExpressions != null && !candidateOrgExpressions.isEmpty()) {
+      for (Expression orgIdExpr : candidateOrgExpressions) {
+        Object value = orgIdExpr.getValue(execution);
+        if (value instanceof String) {
+          List<String> candiates = extractCandidates((String) value);
+          task.addCandidateGroups(candiates);
+        } else if (value instanceof Collection) {
+          task.addCandidateGroups((Collection) value);
         } else {
           throw new ActivitiException("Expression did not resolve to a string or collection of strings");
         }
@@ -314,6 +352,29 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
             Iterator groupIdSet = ((Collection) value).iterator();
             while (groupIdSet.hasNext()) {
               task.addGroupIdentityLink((String)groupIdSet.next(), identityLinkType);
+            }
+          } else {
+            throw new ActivitiException("Expression did not resolve to a string or collection of strings");
+          }
+        }
+      }
+    }
+
+
+    if (!taskDefinition.getCustomOrgIdentityLinkExpressions().isEmpty()) {
+      Map<String, Set<Expression>> identityLinks = taskDefinition.getCustomOrgIdentityLinkExpressions();
+      for (String identityLinkType : identityLinks.keySet()) {
+        for (Expression idExpression : identityLinks.get(identityLinkType) ) {
+          Object value = idExpression.getValue(execution);
+          if (value instanceof String) {
+            List<String> orgIds = extractCandidates((String) value);
+            for (String orgId : orgIds) {
+              task.addGroupIdentityLink(orgId, identityLinkType);
+            }
+          } else if (value instanceof Collection) {
+            Iterator orgIdSet = ((Collection) value).iterator();
+            while (orgIdSet.hasNext()) {
+              task.addGroupIdentityLink((String)orgIdSet.next(), identityLinkType);
             }
           } else {
             throw new ActivitiException("Expression did not resolve to a string or collection of strings");

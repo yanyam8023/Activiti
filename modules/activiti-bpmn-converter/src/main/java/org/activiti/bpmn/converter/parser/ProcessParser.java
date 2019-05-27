@@ -25,6 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Tijs Rademakers
+ * 组、角色xml解析
  */
 public class ProcessParser implements BpmnXMLConstants {
 
@@ -48,6 +49,12 @@ public class ProcessParser implements BpmnXMLConstants {
       if (StringUtils.isNotEmpty(candidateGroupsString)) {
         List<String> candidateGroups = BpmnXMLUtil.parseDelimitedList(candidateGroupsString);
         process.setCandidateStarterGroups(candidateGroups);
+      }
+
+      String candidateOrgsString = xtr.getAttributeValue(ACTIVITI_EXTENSIONS_NAMESPACE, ATTRIBUTE_PROCESS_CANDIDATE_ORGS);
+      if (StringUtils.isNotEmpty(candidateOrgsString)) {
+        List<String> candidateOrgss = BpmnXMLUtil.parseDelimitedList(candidateOrgsString);
+        process.setCandidateStarterOrgs(candidateOrgss);
       }
 
       BpmnXMLUtil.addCustomAttributes(xtr, process, ProcessExport.defaultProcessAttributes);

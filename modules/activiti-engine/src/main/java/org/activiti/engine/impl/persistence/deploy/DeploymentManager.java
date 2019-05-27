@@ -144,6 +144,7 @@ public class DeploymentManager {
     if (processDefinition==null) {
       throw new ActivitiObjectNotFoundException("no processes deployed with key '"+processDefinitionKey+"'", ProcessDefinition.class);
     }
+    // 封装task信息
     processDefinition = resolveProcessDefinition(processDefinition);
     return processDefinition;
   }

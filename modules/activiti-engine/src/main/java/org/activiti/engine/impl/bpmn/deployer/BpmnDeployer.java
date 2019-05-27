@@ -92,6 +92,11 @@ public class BpmnDeployer implements Deployer {
   protected BpmnParser bpmnParser;
   protected IdGenerator idGenerator;
 
+  /**
+   * 流程部署
+   * @param deployment
+   * @param deploymentSettings
+   */
   public void deploy(DeploymentEntity deployment, Map<String, Object> deploymentSettings) {
     log.debug("Processing deployment {}", deployment.getName());
     
@@ -628,7 +633,7 @@ public class BpmnDeployer implements Deployer {
   }
   
   enum ExprType {
-	  USER, GROUP
+	  USER, GROUP, ORG
   }
   
   private void addAuthorizationsFromIterator(Set<Expression> exprSet, ProcessDefinitionEntity processDefinition, ExprType exprType) {
@@ -642,6 +647,8 @@ public class BpmnDeployer implements Deployer {
            identityLink.setUserId(expr.toString());
         } else if (exprType.equals(ExprType.GROUP)) {
           identityLink.setGroupId(expr.toString());
+        }else if (exprType.equals(ExprType.ORG)) {
+          identityLink.setOrgId(expr.toString());
         }
         identityLink.setType(IdentityLinkType.CANDIDATE);
         identityLink.insert();
@@ -652,6 +659,7 @@ public class BpmnDeployer implements Deployer {
   protected void addAuthorizations(ProcessDefinitionEntity processDefinition) {
     addAuthorizationsFromIterator(processDefinition.getCandidateStarterUserIdExpressions(), processDefinition, ExprType.USER);
     addAuthorizationsFromIterator(processDefinition.getCandidateStarterGroupIdExpressions(), processDefinition, ExprType.GROUP);
+    addAuthorizationsFromIterator(processDefinition.getCandidateStarterOrgIdExpressions(), processDefinition, ExprType.ORG);
   }
 
   /**

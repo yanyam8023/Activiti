@@ -35,6 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Joram Barrez
+ * task中权限（较色、用户、部门）
  */
 public class UserTaskParseHandler extends AbstractActivityBpmnParseHandler<UserTask> {
   
@@ -79,11 +80,17 @@ public class UserTaskParseHandler extends AbstractActivityBpmnParseHandler<UserT
     if (StringUtils.isNotEmpty(userTask.getOwner())) {
       taskDefinition.setOwnerExpression(expressionManager.createExpression(userTask.getOwner()));
     }
+    if (StringUtils.isNotEmpty(userTask.getOrg())) {
+      taskDefinition.setOrgExpression(expressionManager.createExpression(userTask.getOrg()));
+    }
     for (String candidateUser : userTask.getCandidateUsers()) {
       taskDefinition.addCandidateUserIdExpression(expressionManager.createExpression(candidateUser));
     }
     for (String candidateGroup : userTask.getCandidateGroups()) {
       taskDefinition.addCandidateGroupIdExpression(expressionManager.createExpression(candidateGroup));
+    }
+    for (String candidateOrg : userTask.getCandidateOrgs()) {
+      taskDefinition.addCandidateOrgIdExpression(expressionManager.createExpression(candidateOrg));
     }
     
     // Activiti custom extension
@@ -136,6 +143,15 @@ public class UserTaskParseHandler extends AbstractActivityBpmnParseHandler<UserT
     	}
     	taskDefinition.addCustomGroupIdentityLinkExpression(customGroupIdentityLinkType, groupIdentityLinkExpression);
       }
+
+    // CustomOrgIdentityLinks
+    for (String customOrgIdentityLinkType : userTask.getCustomOrgIdentityLinks().keySet()) {
+      Set<Expression> orgIdentityLinkExpression = new HashSet<Expression>();
+      for (String orgIdentityLink : userTask.getCustomOrgIdentityLinks().get(customOrgIdentityLinkType)) {
+        orgIdentityLinkExpression.add(expressionManager.createExpression(orgIdentityLink));
+      }
+      taskDefinition.addCustomOrgIdentityLinkExpression(customOrgIdentityLinkType, orgIdentityLinkExpression);
+    }
 
     if (StringUtils.isNotEmpty(userTask.getSkipExpression())) {
       taskDefinition.setSkipExpression(expressionManager.createExpression(userTask.getSkipExpression()));

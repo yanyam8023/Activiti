@@ -40,14 +40,18 @@ public class TaskDefinition implements Serializable {
   protected Expression ownerExpression;
   protected Expression descriptionExpression;
   protected Expression assigneeExpression;
-  protected Set<Expression> candidateUserIdExpressions = new HashSet<Expression>();
-  protected Set<Expression> candidateGroupIdExpressions = new HashSet<Expression>();
+  protected Expression orgExpression;
+  protected Set<Expression> candidateUserIdExpressions = new HashSet<Expression>(); // 流程配置的用户信息
+  protected Set<Expression> candidateGroupIdExpressions = new HashSet<Expression>(); // 流程配置的角色信息
+  protected Set<Expression> candidateOrgIdExpressions = new HashSet<Expression>(); // 流程配置的部门信息
   protected Expression dueDateExpression;
   protected Expression businessCalendarNameExpression;
   protected Expression priorityExpression;
   protected Expression categoryExpression;
   protected Map<String, Set<Expression>> customUserIdentityLinkExpressions = new HashMap<String, Set<Expression>>(); 
   protected Map<String, Set<Expression>> customGroupIdentityLinkExpressions = new HashMap<String, Set<Expression>>();
+  protected Map<String, Set<Expression>> customOrgIdentityLinkExpressions = new HashMap<String, Set<Expression>>();
+
   protected Expression skipExpression;
   
   // form fields
@@ -117,6 +121,27 @@ public class TaskDefinition implements Serializable {
   
   public void setCandidateGroupIdExpressions(Set<Expression> candidateGroupIdExpressions) {
     this.candidateGroupIdExpressions = candidateGroupIdExpressions;
+  }
+
+  public Set<Expression> getCandidateOrgExpressions() {
+    return candidateOrgIdExpressions;
+  }
+
+  public void setCandidateOrgExpressions(Set<Expression> candidateOrgIdExpressions) {
+    this.candidateOrgIdExpressions = candidateOrgIdExpressions;
+  }
+
+
+  public Map<String, Set<Expression>> getCustomOrgIdentityLinkExpressions() {
+    return customOrgIdentityLinkExpressions;
+  }
+
+  public void addCustomOrgIdentityLinkExpression(String identityLinkType, Set<Expression> idList) {
+    customOrgIdentityLinkExpressions.put(identityLinkType, idList);
+  }
+
+  public void addCandidateOrgIdExpression(Expression orgId) {
+    candidateOrgIdExpressions.add(orgId);
   }
 
   public Map<String, Set<Expression>> getCustomUserIdentityLinkExpressions() {
@@ -229,5 +254,14 @@ public class TaskDefinition implements Serializable {
   
   public void setSkipExpression(Expression skipExpression) {
     this.skipExpression = skipExpression;
+  }
+
+
+  public Expression getOrgExpression() {
+    return orgExpression;
+  }
+
+  public void setOrgExpression(Expression orgExpression) {
+    this.orgExpression = orgExpression;
   }
 }

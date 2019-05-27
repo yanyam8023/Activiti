@@ -33,8 +33,10 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceBuilder;
+import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.test.Deployment;
+import org.junit.Test;
 
 /**
  * @author Frederik Heremans
@@ -46,9 +48,13 @@ public class RuntimeServiceTest extends PluggableActivitiTestCase {
   public void testStartProcessInstanceWithVariables() {
     Map<String, Object> vars = new HashMap<String, Object>();
     vars.put("basicType", new DummySerializable());
-    runtimeService.startProcessInstanceByKey("oneTaskProcess", vars);
-    Task task = taskService.createTaskQuery().includeProcessVariables().singleResult();
-    assertNotNull(task.getProcessVariables());
+    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess", vars);
+    System.out.println("流程实例："+processInstance.getId());
+    Task task = taskService.createTaskQuery().processInstanceId(processInstance.getProcessInstanceId()).singleResult();
+    List<IdentityLink> list = taskService.getIdentityLinksForTask(task.getId());
+    for (IdentityLink identityLink : list){
+      System.out.println("权限为："+identityLink);
+    }
   }
 
   @Deployment(resources = {"org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml"})
@@ -1050,6 +1056,7 @@ public class RuntimeServiceTest extends PluggableActivitiTestCase {
 	       assertEquals(2, historyService.createHistoricVariableInstanceQuery().list().size());
 	       assertNull(historyService.createHistoricVariableInstanceQuery().processInstanceId(processInstance.getId()).variableName("var2").singleResult());
 	    }
+
     }
     
 }

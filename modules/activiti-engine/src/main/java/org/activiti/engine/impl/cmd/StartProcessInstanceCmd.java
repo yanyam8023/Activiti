@@ -68,7 +68,7 @@ public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Ser
       .getProcessEngineConfiguration()
       .getDeploymentManager();
     
-    // Find the process definition
+    // Find the process definition  查询流程定义
     ProcessDefinitionEntity processDefinition = null;
     if (processDefinitionId != null) {
       processDefinition = deploymentManager.findDeployedProcessDefinitionById(processDefinitionId);
@@ -76,6 +76,7 @@ public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Ser
         throw new ActivitiObjectNotFoundException("No process definition found for id = '" + processDefinitionId + "'", ProcessDefinition.class);
       }
     } else if (processDefinitionKey != null && (tenantId == null || ProcessEngineConfiguration.NO_TENANT_ID.equals(tenantId))){
+      // 根据流程key 查询流程定义
       processDefinition = deploymentManager.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
       if (processDefinition == null) {
         throw new ActivitiObjectNotFoundException("No process definition found for key '" + processDefinitionKey +"'", ProcessDefinition.class);
@@ -94,7 +95,7 @@ public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Ser
       throw new ActivitiException("Cannot start process instance. Process definition " 
               + processDefinition.getName() + " (id = " + processDefinition.getId() + ") is suspended");
     }
-
+    System.out.println("流程定义为："+processDefinition.getTaskDefinitions());
     // Start the process instance
     ExecutionEntity processInstance = processDefinition.createProcessInstance(businessKey);
 

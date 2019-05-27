@@ -354,6 +354,14 @@
     </annotation>
   </attribute>
 
+  <attribute name="candidateOrgs">
+    <annotation>
+      <documentation>
+          orgs
+      </documentation>
+    </annotation>
+  </attribute>
+
   <attribute name="priority">
     <annotation>
       <documentation>

@@ -169,7 +169,11 @@ public class BpmnParse implements BpmnXMLConstants {
     this.deployment = deployment;
     return this;
   }
-  
+
+  /**
+   * 流程部署文件xml
+   * @return
+   */
   public BpmnParse execute() {
     try {
 
@@ -392,6 +396,7 @@ public class BpmnParse implements BpmnXMLConstants {
 
   /**
    * Parses the 'definitions' root element
+   * 解析xml文件
    */
   protected void transformProcessDefinitions() {
     sequenceFlows = new HashMap<String, TransitionImpl>();

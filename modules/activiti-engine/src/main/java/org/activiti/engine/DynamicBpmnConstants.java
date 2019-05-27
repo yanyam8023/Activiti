@@ -33,8 +33,10 @@ public interface DynamicBpmnConstants {
   String USER_TASK_FORM_KEY = "userTaskFormKey";
   String USER_TASK_ASSIGNEE = "userTaskAssignee";
   String USER_TASK_OWNER = "userTaskOwner";
+  String USER_TASK_ORG = "userTaskOrg";
   String USER_TASK_CANDIDATE_USERS = "userTaskCandidateUsers";
   String USER_TASK_CANDIDATE_GROUPS = "userTaskCandidateGroups";
+  String USER_TASK_CANDIDATE_ORGS = "userTaskCandidateOrgs";
   
   String SEQUENCE_FLOW_CONDITION = "sequenceFlowCondition";
 

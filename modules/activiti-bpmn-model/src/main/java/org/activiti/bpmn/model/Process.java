@@ -32,6 +32,7 @@ public class Process extends BaseElement implements FlowElementsContainer, HasEx
   protected List<Artifact> artifactList = new ArrayList<Artifact>();
   protected List<String> candidateStarterUsers = new ArrayList<String>();
   protected List<String> candidateStarterGroups = new ArrayList<String>();
+  protected List<String> candidateStarterOrgs = new ArrayList<String>();
   protected List<EventListener> eventListeners = new ArrayList<EventListener>();
   
   public Process() {
@@ -196,6 +197,14 @@ public class Process extends BaseElement implements FlowElementsContainer, HasEx
 
   public void setCandidateStarterGroups(List<String> candidateStarterGroups) {
     this.candidateStarterGroups = candidateStarterGroups;
+  }
+
+  public List<String> getCandidateStarterOrgs() {
+    return candidateStarterOrgs;
+  }
+
+  public void setCandidateStarterOrgs(List<String> candidateStarterOrgs) {
+    this.candidateStarterOrgs = candidateStarterOrgs;
   }
   
   public List<EventListener> getEventListeners() {

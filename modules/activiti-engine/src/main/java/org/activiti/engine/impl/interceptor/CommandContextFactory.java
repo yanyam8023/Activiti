@@ -18,6 +18,7 @@ import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 
 /**
  * @author Tom Baeyens
+ * 命令工厂上下文
  */
 public class CommandContextFactory {
 

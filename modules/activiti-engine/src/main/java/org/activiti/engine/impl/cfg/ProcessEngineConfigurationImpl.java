@@ -250,6 +250,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * @author Tom Baeyens
  * @author Joram Barrez
+ * 流程引擎初始化类
  */
 public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {  
 
@@ -660,13 +661,13 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   }
 
   // command executors ////////////////////////////////////////////////////////
-  
+  // 初始化 commandExecutors
   protected void initCommandExecutors() {
     initDefaultCommandConfig();
     initSchemaCommandConfig();
     initCommandInvoker();
-    initCommandInterceptors();
-    initCommandExecutor();
+    initCommandInterceptors();  // 获取执行命令所有调用链
+    initCommandExecutor(); // activiti执行命令的调用链
   }
 
   protected void initDefaultCommandConfig() {
@@ -686,7 +687,10 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
       commandInvoker = new CommandInvoker();
     }
   }
-  
+
+  /**
+   * 加载调用链资源
+   */
   protected void initCommandInterceptors() {
     if (commandInterceptors==null) {
       commandInterceptors = new ArrayList<CommandInterceptor>();
@@ -701,6 +705,10 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     }
   }
 
+  /**
+   * 默认调用链
+   * @return
+   */
   protected Collection< ? extends CommandInterceptor> getDefaultCommandInterceptors() {
     List<CommandInterceptor> interceptors = new ArrayList<CommandInterceptor>();
     interceptors.add(new LogInterceptor());
@@ -714,6 +722,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     return interceptors;
   }
 
+  /**
+   * 调用链初始化
+   */
   protected void initCommandExecutor() {
     if (commandExecutor==null) {
       CommandInterceptor first = initInterceptorChain(commandInterceptors);

@@ -31,7 +31,7 @@ import org.activiti.engine.impl.javax.el.ValueExpression;
  * @author Frederik Heremans
  * @author Joram Barrez
  */
-public class JuelExpression implements Expression {
+public class  JuelExpression implements Expression {
 
   protected String expressionText;
   protected ValueExpression valueExpression;

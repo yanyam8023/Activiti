@@ -43,6 +43,8 @@ import org.activiti.engine.task.IdentityLinkType;
 /**
  * @author Tom Baeyens
  * @author Daniel Meyer
+ * 流程节点信息包含task及配置的用户、角色
+ * 最终会封装到该类
  */
 public class ProcessDefinitionEntity extends ProcessDefinitionImpl implements ProcessDefinition, PersistentObject, HasRevision {
 
@@ -67,6 +69,8 @@ public class ProcessDefinitionEntity extends ProcessDefinitionImpl implements Pr
   protected List<IdentityLinkEntity> definitionIdentityLinkEntities = new ArrayList<IdentityLinkEntity>();
   protected Set<Expression> candidateStarterUserIdExpressions = new HashSet<Expression>();
   protected Set<Expression> candidateStarterGroupIdExpressions = new HashSet<Expression>();
+  protected Set<Expression> candidateStarterOrgIdExpressions = new HashSet<Expression>();
+
   protected transient ActivitiEventSupport eventSupport;
   
   public ProcessDefinitionEntity() {
@@ -363,6 +367,14 @@ public class ProcessDefinitionEntity extends ProcessDefinitionImpl implements Pr
 
   public void addCandidateStarterGroupIdExpression(Expression groupId) {
     candidateStarterGroupIdExpressions.add(groupId);
+  }
+
+  public Set<Expression> getCandidateStarterOrgIdExpressions() {
+    return candidateStarterOrgIdExpressions;
+  }
+
+  public void addCandidateStarterOrgIdExpression(Expression orgId) {
+    candidateStarterGroupIdExpressions.add(orgId);
   }
   
   public ActivitiEventSupport getEventSupport() {

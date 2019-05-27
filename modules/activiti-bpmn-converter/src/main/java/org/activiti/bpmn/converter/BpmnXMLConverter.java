@@ -241,7 +241,8 @@ public class BpmnXMLConverter implements BpmnXMLConstants {
   public BpmnModel convertToBpmnModel(InputStreamProvider inputStreamProvider, boolean validateSchema, boolean enableSafeBpmnXml) {
     return convertToBpmnModel(inputStreamProvider, validateSchema, enableSafeBpmnXml, DEFAULT_ENCODING);
   }
-  
+
+
   public BpmnModel convertToBpmnModel(InputStreamProvider inputStreamProvider, boolean validateSchema, boolean enableSafeBpmnXml, String encoding) {
     XMLInputFactory xif = XMLInputFactory.newInstance();
 
@@ -297,6 +298,11 @@ public class BpmnXMLConverter implements BpmnXMLConstants {
     }
   }
 
+    /**
+     * 该方法封装了解析xml方法parse，具体实现进入到该方法中
+     * @param xtr
+     * @return
+     */
 	public BpmnModel convertToBpmnModel(XMLStreamReader xtr) { 
 	  BpmnModel model = new BpmnModel();
 	  model.setStartEventFormTypes(startEventFormTypes);
@@ -311,7 +317,6 @@ public class BpmnXMLConverter implements BpmnXMLConstants {
 					LOGGER.debug("Error reading XML document", e);
 					throw new XMLException("Error reading XML", e);
 				}
-
 				if (xtr.isEndElement()  && ELEMENT_SUBPROCESS.equals(xtr.getLocalName())) {
 					activeSubProcessList.remove(activeSubProcessList.size() - 1);
 				}
@@ -362,13 +367,12 @@ public class BpmnXMLConverter implements BpmnXMLConstants {
 				  participantParser.parse(xtr, model);
 				  
 				} else if (ELEMENT_MESSAGE_FLOW.equals(xtr.getLocalName())) {
-          messageFlowParser.parse(xtr, model);
+                     messageFlowParser.parse(xtr, model);
 
 				} else if (ELEMENT_PROCESS.equals(xtr.getLocalName())) {
-					
 				  Process process = processParser.parse(xtr, model);
 				  if (process != null) {
-            activeProcess = process;	
+				      activeProcess = process;
 				  }
 				
 				} else if (ELEMENT_POTENTIAL_STARTER.equals(xtr.getLocalName())) {

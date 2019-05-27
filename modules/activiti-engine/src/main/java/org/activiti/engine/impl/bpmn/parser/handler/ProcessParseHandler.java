@@ -79,6 +79,10 @@ public class ProcessParseHandler extends AbstractBpmnParseHandler<Process> {
       currentProcessDefinition.addCandidateStarterGroupIdExpression(expressionManager.createExpression(candidateGroup));
     }
 
+    for (String candidateOrg : process.getCandidateStarterOrgs()) {
+        currentProcessDefinition.addCandidateStarterOrgIdExpression(expressionManager.createExpression(candidateOrg));
+    }
+
     if (LOGGER.isDebugEnabled()) {
       LOGGER.debug("Parsing process {}", currentProcessDefinition.getKey());
     }

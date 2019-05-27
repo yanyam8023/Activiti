@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Tom Baeyens
+ * activiti命令拦截器
  */
 public class CommandContextInterceptor extends AbstractCommandInterceptor {
   private static final Logger log = LoggerFactory.getLogger(CommandContextInterceptor.class);
@@ -36,6 +37,7 @@ public class CommandContextInterceptor extends AbstractCommandInterceptor {
   }
 
   public <T> T execute(CommandConfig config, Command<T> command) {
+    log.info("①拦截的命令为："+config+"####"+command);
     CommandContext context = Context.getCommandContext();
     
     boolean contextReused = false;

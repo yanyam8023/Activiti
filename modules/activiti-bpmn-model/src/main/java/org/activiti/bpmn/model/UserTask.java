@@ -26,6 +26,7 @@ public class UserTask extends Task {
 
   protected String assignee;
   protected String owner;
+  protected String org;
   protected String priority;
   protected String formKey;
   protected String dueDate;
@@ -34,13 +35,15 @@ public class UserTask extends Task {
   protected String extensionId;
   protected List<String> candidateUsers = new ArrayList<String>();
   protected List<String> candidateGroups = new ArrayList<String>();
+  protected List<String> candidateOrgs = new ArrayList<String>();
   protected List<FormProperty> formProperties = new ArrayList<FormProperty>();
   protected List<ActivitiListener> taskListeners = new ArrayList<ActivitiListener>();
   protected String skipExpression;
 
   protected Map<String, Set<String>> customUserIdentityLinks = new HashMap<String, Set<String>>(); 
   protected Map<String, Set<String>> customGroupIdentityLinks = new HashMap<String, Set<String>>();
-  
+  protected Map<String, Set<String>> customOrgIdentityLinks = new HashMap<String, Set<String>>();
+
   protected List<CustomProperty> customProperties = new ArrayList<CustomProperty>();
 
   public String getAssignee() {
@@ -109,6 +112,13 @@ public class UserTask extends Task {
   public void setCandidateGroups(List<String> candidateGroups) {
     this.candidateGroups = candidateGroups;
   }
+  public List<String> getCandidateOrgs() {
+    return candidateOrgs;
+  }
+
+  public void setCandidateOrgs(List<String> candidateOrgs) {
+    this.candidateOrgs = candidateOrgs;
+  }
   public List<FormProperty> getFormProperties() {
     return formProperties;
   }
@@ -121,7 +131,24 @@ public class UserTask extends Task {
   public void setTaskListeners(List<ActivitiListener> taskListeners) {
     this.taskListeners = taskListeners;
   }
-  
+
+  public String getOrg() {
+    return org;
+  }
+
+  public void setOrg(String org) {
+    this.org = org;
+  }
+
+
+  public Map<String, Set<String>> getCustomOrgIdentityLinks() {
+    return customOrgIdentityLinks;
+  }
+
+  public void setCustomOrgIdentityLinks(Map<String, Set<String>> customOrgIdentityLinks) {
+    this.customOrgIdentityLinks = customOrgIdentityLinks;
+  }
+
   public void addCustomUserIdentityLink(String userId, String type){
 	  Set<String> userIdentitySet = customUserIdentityLinks.get(type);
 	  
@@ -185,6 +212,7 @@ public class UserTask extends Task {
     super.setValues(otherElement);
     setAssignee(otherElement.getAssignee());
     setOwner(otherElement.getOwner());
+    setOrg(otherElement.getOrg());
     setFormKey(otherElement.getFormKey());
     setDueDate(otherElement.getDueDate());
     setPriority(otherElement.getPriority());
@@ -194,10 +222,11 @@ public class UserTask extends Task {
     
     setCandidateGroups(new ArrayList<String>(otherElement.getCandidateGroups()));
     setCandidateUsers(new ArrayList<String>(otherElement.getCandidateUsers()));
-    
+    setCandidateOrgs(new ArrayList<String>(otherElement.getCandidateOrgs()));
     setCustomGroupIdentityLinks(otherElement.customGroupIdentityLinks);
     setCustomUserIdentityLinks(otherElement.customUserIdentityLinks);
-    
+    setCustomOrgIdentityLinks(otherElement.getCustomOrgIdentityLinks());
+
     formProperties = new ArrayList<FormProperty>();
     if (otherElement.getFormProperties() != null && !otherElement.getFormProperties().isEmpty()) {
       for (FormProperty property : otherElement.getFormProperties()) {

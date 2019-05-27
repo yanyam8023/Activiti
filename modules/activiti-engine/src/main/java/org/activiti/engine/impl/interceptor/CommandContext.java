@@ -79,7 +79,7 @@ public class CommandContext {
   protected LinkedList<AtomicOperation> nextOperations = new LinkedList<AtomicOperation>();
   protected ProcessEngineConfigurationImpl processEngineConfiguration;
   protected FailedJobCommandFactory failedJobCommandFactory;
-	protected List<CommandContextCloseListener> closeListeners;
+  protected List<CommandContextCloseListener> closeListeners;
   protected Map<String, Object> attributes; // General-purpose storing of anything during the lifetime of a command context
 
   
@@ -106,6 +106,7 @@ public class CommandContext {
   }
 
   public CommandContext(Command<?> command, ProcessEngineConfigurationImpl processEngineConfiguration) {
+    log.info("③命令工厂执行"+command+"!!!!!"+processEngineConfiguration);
     this.command = command;
     this.processEngineConfiguration = processEngineConfiguration;
     this.failedJobCommandFactory = processEngineConfiguration.getFailedJobCommandFactory();

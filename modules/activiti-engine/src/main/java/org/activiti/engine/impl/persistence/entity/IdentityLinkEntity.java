@@ -39,7 +39,9 @@ public class IdentityLinkEntity implements Serializable, IdentityLink, BulkDelet
   protected String userId;
   
   protected String groupId;
-  
+
+  protected String orgId;
+
   protected String taskId;
   
   protected String processInstanceId;
@@ -63,6 +65,10 @@ public class IdentityLinkEntity implements Serializable, IdentityLink, BulkDelet
     
     if (this.groupId != null) {
       persistentState.put("groupId", this.groupId);
+    }
+
+    if (this.orgId != null) {
+      persistentState.put("orgId", this.orgId);
     }
     
     if (this.taskId != null) {
@@ -168,6 +174,14 @@ public class IdentityLinkEntity implements Serializable, IdentityLink, BulkDelet
     this.processDefId = processDefId;
   }
 
+  public String getOrgId() {
+    return orgId;
+  }
+
+  public void setOrgId(String orgId) {
+    this.orgId = orgId;
+  }
+
   public TaskEntity getTask() {
     if ( (task==null) && (taskId!=null) ) {
       this.task = Context
@@ -228,6 +242,9 @@ public class IdentityLinkEntity implements Serializable, IdentityLink, BulkDelet
     }
     if (groupId != null) {
       sb.append(", groupId=").append(groupId);
+    }
+    if (orgId != null) {
+      sb.append(", orgId=").append(orgId);
     }
     if (taskId != null) {
       sb.append(", taskId=").append(taskId);
