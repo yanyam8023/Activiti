@@ -88,6 +88,16 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                 }
                 assignmentValuesNode.put(PROPERTY_USERTASK_CANDIDATE_GROUPS, candidateArrayNode);
             }
+
+            if (CollectionUtils.isNotEmpty(userTask.getCandidateOrgs())) {
+                ArrayNode candidateArrayNode = objectMapper.createArrayNode();
+                for (String candidateOrg : userTask.getCandidateOrgs()) {
+                    ObjectNode candidateNode = objectMapper.createObjectNode();
+                    candidateNode.put("value", candidateOrg);
+                    candidateArrayNode.add(candidateNode);
+                }
+                assignmentValuesNode.put(PROPERTY_USERTASK_CANDIDATE_ORGS, candidateArrayNode);
+            }
           
             assignmentNode.put("assignment", assignmentValuesNode);
             propertiesNode.put(PROPERTY_USERTASK_ASSIGNMENT, assignmentNode);
@@ -135,6 +145,7 @@ public class UserTaskJsonConverter extends BaseBpmnJsonConverter {
                 
                 task.setCandidateUsers(getValueAsList(PROPERTY_USERTASK_CANDIDATE_USERS, assignmentDefNode));
                 task.setCandidateGroups(getValueAsList(PROPERTY_USERTASK_CANDIDATE_GROUPS, assignmentDefNode));
+                task.setCandidateOrgs(getValueAsList(PROPERTY_USERTASK_CANDIDATE_ORGS, assignmentDefNode));
             }
         }
         convertJsonToFormProperties(elementNode, task);

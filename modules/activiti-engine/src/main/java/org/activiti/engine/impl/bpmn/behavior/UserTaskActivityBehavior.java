@@ -112,7 +112,7 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
       taskDefinition.setCandidateGroupIdExpressions(activeCandidateGroupExpressions);
 
       activeCandidateOrgExpressions = getActiveValueSet(taskDefinition.getCandidateOrgExpressions(), DynamicBpmnConstants.USER_TASK_CANDIDATE_ORGS, taskElementProperties);
-      taskDefinition.setCandidateOrgExpressions(activeCandidateOrgExpressions);
+      taskDefinition.setCandidateOrgIdExpressions(activeCandidateOrgExpressions);
       
     } else {
       activeNameExpression = taskDefinition.getNameExpression();

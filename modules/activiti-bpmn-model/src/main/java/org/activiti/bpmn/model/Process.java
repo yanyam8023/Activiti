@@ -307,6 +307,11 @@ public class Process extends BaseElement implements FlowElementsContainer, HasEx
     if (otherElement.getCandidateStarterGroups() != null && !otherElement.getCandidateStarterGroups().isEmpty()) {
       candidateStarterGroups.addAll(otherElement.getCandidateStarterGroups());
     }
+
+    candidateStarterOrgs = new ArrayList<String>();
+    if (otherElement.getCandidateStarterOrgs() != null && !otherElement.getCandidateStarterOrgs().isEmpty()) {
+      candidateStarterOrgs.addAll(otherElement.getCandidateStarterOrgs());
+    }
     
     eventListeners = new ArrayList<EventListener>();
     if(otherElement.getEventListeners() != null && !otherElement.getEventListeners().isEmpty()) {

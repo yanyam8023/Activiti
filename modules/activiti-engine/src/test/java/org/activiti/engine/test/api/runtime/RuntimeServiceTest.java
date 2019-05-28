@@ -13,12 +13,17 @@
 
 package org.activiti.engine.test.api.runtime;
 
+import java.io.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.ActivitiObjectNotFoundException;
@@ -26,9 +31,11 @@ import org.activiti.engine.history.HistoricDetail;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.history.HistoryLevel;
+import org.activiti.engine.impl.persistence.entity.DeploymentEntity;
 import org.activiti.engine.impl.persistence.entity.HistoricDetailVariableInstanceUpdateEntity;
 import org.activiti.engine.impl.test.PluggableActivitiTestCase;
 import org.activiti.engine.impl.util.CollectionUtil;
+import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -44,16 +51,35 @@ import org.junit.Test;
  */
 public class RuntimeServiceTest extends PluggableActivitiTestCase {
 
-  @Deployment(resources={"org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml"})
   public void testStartProcessInstanceWithVariables() {
     Map<String, Object> vars = new HashMap<String, Object>();
     vars.put("basicType", new DummySerializable());
-    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess", vars);
+    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("ceshi", vars);
     System.out.println("流程实例："+processInstance.getId());
     Task task = taskService.createTaskQuery().processInstanceId(processInstance.getProcessInstanceId()).singleResult();
     List<IdentityLink> list = taskService.getIdentityLinksForTask(task.getId());
     for (IdentityLink identityLink : list){
       System.out.println("权限为："+identityLink);
+    }
+  }
+
+
+  public void testSave() {
+    try {
+
+      Model modelData = repositoryService.getModel("1");
+      byte[] bytes = repositoryService.getModelEditorSource(modelData.getId());
+      JsonNode modelNode = new ObjectMapper().readTree(bytes);
+      BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
+      org.activiti.engine.repository.Deployment deployment = repositoryService.createDeployment()
+              .name(modelData.getName())
+              .addBpmnModel(modelData.getKey()+".bpmn20.xml", model)
+              .deploy();
+      modelData.setDeploymentId(deployment.getId());
+      repositoryService.saveModel(modelData);
+      //this.testStartProcessInstanceWithVariables();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 

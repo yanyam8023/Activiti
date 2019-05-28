@@ -413,7 +413,12 @@ public class BpmnJsonConverter implements EditorJsonConstants, StencilConstants,
                     shapesArrayNode, 0.0, 0.0);
         }
     }
-        
+
+    /**
+     * json 转xml
+     * @param modelNode
+     * @return
+     */
     public BpmnModel convertToBpmnModel(JsonNode modelNode) {
         
         BpmnModel bpmnModel = new BpmnModel();
@@ -529,7 +534,7 @@ public class BpmnJsonConverter implements EditorJsonConstants, StencilConstants,
               process.setDataObjects(dataObjects);
               process.getFlowElements().addAll(dataObjects);
             }
-
+            // usertask 节点数据处理
             processJsonElements(shapesArrayNode, modelNode, process, shapeMap, bpmnModel);
 
         } else {

@@ -127,7 +127,7 @@ public class TaskDefinition implements Serializable {
     return candidateOrgIdExpressions;
   }
 
-  public void setCandidateOrgExpressions(Set<Expression> candidateOrgIdExpressions) {
+  public void setCandidateOrgIdExpressions(Set<Expression> candidateOrgIdExpressions) {
     this.candidateOrgIdExpressions = candidateOrgIdExpressions;
   }
 

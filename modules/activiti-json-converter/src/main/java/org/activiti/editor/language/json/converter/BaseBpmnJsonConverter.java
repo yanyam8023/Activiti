@@ -282,12 +282,21 @@ public abstract class BaseBpmnJsonConverter implements EditorJsonConstants, Sten
         shapesArrayNode.add(flowNode);
     }
 
+    /**
+     * usertask 节点解析并封转
+     * @param elementNode
+     * @param modelNode
+     * @param processor
+     * @param parentElement
+     * @param shapeMap
+     * @param bpmnModel
+     */
     public void convertToBpmnModel(JsonNode elementNode, JsonNode modelNode, ActivityProcessor processor, BaseElement parentElement, 
             Map<String, JsonNode> shapeMap, BpmnModel bpmnModel) {
 
         this.processor = processor;
         this.model = bpmnModel;
-
+        //json 转xml usertask
         BaseElement baseElement = convertJsonToElement(elementNode, modelNode, shapeMap);
         baseElement.setId(BpmnJsonConverterUtil.getElementId(elementNode));
 
