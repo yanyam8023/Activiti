@@ -27,7 +27,7 @@ public class CommandInvoker extends AbstractCommandInterceptor {
 
   @Override
   public <T> T execute(CommandConfig config, Command<T> command) {
-    log.info("⑤执行了"+config+"命令为："+command);
+    log.debug("⑤执行了"+config+"命令为："+command);
     return command.execute(Context.getCommandContext());
   }
 

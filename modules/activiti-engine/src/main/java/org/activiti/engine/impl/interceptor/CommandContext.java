@@ -106,7 +106,7 @@ public class CommandContext {
   }
 
   public CommandContext(Command<?> command, ProcessEngineConfigurationImpl processEngineConfiguration) {
-    log.info("③命令工厂执行"+command+"!!!!!"+processEngineConfiguration);
+    log.debug("③命令工厂执行"+command+"!!!!!"+processEngineConfiguration);
     this.command = command;
     this.processEngineConfiguration = processEngineConfiguration;
     this.failedJobCommandFactory = processEngineConfiguration.getFailedJobCommandFactory();

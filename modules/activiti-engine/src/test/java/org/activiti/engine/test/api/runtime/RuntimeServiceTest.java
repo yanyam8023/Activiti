@@ -23,7 +23,6 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.ActivitiObjectNotFoundException;
@@ -63,25 +62,6 @@ public class RuntimeServiceTest extends PluggableActivitiTestCase {
     }
   }
 
-
-  public void testSave() {
-    try {
-
-      Model modelData = repositoryService.getModel("1");
-      byte[] bytes = repositoryService.getModelEditorSource(modelData.getId());
-      JsonNode modelNode = new ObjectMapper().readTree(bytes);
-      BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
-      org.activiti.engine.repository.Deployment deployment = repositoryService.createDeployment()
-              .name(modelData.getName())
-              .addBpmnModel(modelData.getKey()+".bpmn20.xml", model)
-              .deploy();
-      modelData.setDeploymentId(deployment.getId());
-      repositoryService.saveModel(modelData);
-      this.testStartProcessInstanceWithVariables();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
 
   @Deployment(resources = {"org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml"})
   public void testStartProcessInstanceWithLongStringVariable() {
