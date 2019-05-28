@@ -130,15 +130,24 @@ public class UserTaskXMLConverter extends BaseBpmnXMLConverter {
     
     return userTask;
   }
-  
+
+  /**
+   * json 转 xml usertask
+   * @param element
+   * @param model
+   * @param xtw
+   * @throws Exception
+   */
   @Override
   @SuppressWarnings("unchecked")
   protected void writeAdditionalAttributes(BaseElement element, BpmnModel model, XMLStreamWriter xtw) throws Exception {
     UserTask userTask = (UserTask) element;
     writeQualifiedAttribute(ATTRIBUTE_TASK_USER_ASSIGNEE, userTask.getAssignee(), xtw);
     writeQualifiedAttribute(ATTRIBUTE_TASK_USER_OWNER, userTask.getOwner(), xtw);
+    writeQualifiedAttribute(ATTRIBUTE_TASK_USER_ORG, userTask.getOrg(), xtw);
     writeQualifiedAttribute(ATTRIBUTE_TASK_USER_CANDIDATEUSERS, convertToDelimitedString(userTask.getCandidateUsers()), xtw);
     writeQualifiedAttribute(ATTRIBUTE_TASK_USER_CANDIDATEGROUPS, convertToDelimitedString(userTask.getCandidateGroups()), xtw);
+    writeQualifiedAttribute(ATTRIBUTE_TASK_USER_CANDIDATEORGS, convertToDelimitedString(userTask.getCandidateOrgs()), xtw);
     writeQualifiedAttribute(ATTRIBUTE_TASK_USER_DUEDATE, userTask.getDueDate(), xtw);
     writeQualifiedAttribute(ATTRIBUTE_TASK_USER_BUSINESS_CALENDAR_NAME, userTask.getBusinessCalendarName(), xtw);
     writeQualifiedAttribute(ATTRIBUTE_TASK_USER_CATEGORY, userTask.getCategory(), xtw);

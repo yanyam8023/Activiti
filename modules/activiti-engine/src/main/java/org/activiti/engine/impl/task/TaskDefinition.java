@@ -123,7 +123,7 @@ public class TaskDefinition implements Serializable {
     this.candidateGroupIdExpressions = candidateGroupIdExpressions;
   }
 
-  public Set<Expression> getCandidateOrgExpressions() {
+  public Set<Expression> getCandidateOrgIdExpressions() {
     return candidateOrgIdExpressions;
   }
 

@@ -54,7 +54,12 @@ public class ProcessExport implements BpmnXMLConstants {
 
     if (!process.getCandidateStarterGroups().isEmpty()) {
       xtw.writeAttribute(ACTIVITI_EXTENSIONS_PREFIX, ACTIVITI_EXTENSIONS_NAMESPACE, ATTRIBUTE_PROCESS_CANDIDATE_GROUPS,
-          BpmnXMLUtil.convertToDelimitedString(process.getCandidateStarterGroups()));
+              BpmnXMLUtil.convertToDelimitedString(process.getCandidateStarterGroups()));
+    }
+
+    if (!process.getCandidateStarterOrgs().isEmpty()) {
+      xtw.writeAttribute(ACTIVITI_EXTENSIONS_PREFIX, ACTIVITI_EXTENSIONS_NAMESPACE, ATTRIBUTE_PROCESS_CANDIDATE_ORGS,
+              BpmnXMLUtil.convertToDelimitedString(process.getCandidateStarterOrgs()));
     }
 
     // write custom attributes

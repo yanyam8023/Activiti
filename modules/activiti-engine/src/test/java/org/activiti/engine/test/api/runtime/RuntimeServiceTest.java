@@ -77,7 +77,7 @@ public class RuntimeServiceTest extends PluggableActivitiTestCase {
               .deploy();
       modelData.setDeploymentId(deployment.getId());
       repositoryService.saveModel(modelData);
-      //this.testStartProcessInstanceWithVariables();
+      this.testStartProcessInstanceWithVariables();
     } catch (Exception e) {
       e.printStackTrace();
     }

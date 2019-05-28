@@ -111,7 +111,7 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
       activeCandidateGroupExpressions = getActiveValueSet(taskDefinition.getCandidateGroupIdExpressions(), DynamicBpmnConstants.USER_TASK_CANDIDATE_GROUPS, taskElementProperties);
       taskDefinition.setCandidateGroupIdExpressions(activeCandidateGroupExpressions);
 
-      activeCandidateOrgExpressions = getActiveValueSet(taskDefinition.getCandidateOrgExpressions(), DynamicBpmnConstants.USER_TASK_CANDIDATE_ORGS, taskElementProperties);
+      activeCandidateOrgExpressions = getActiveValueSet(taskDefinition.getCandidateOrgIdExpressions(), DynamicBpmnConstants.USER_TASK_CANDIDATE_ORGS, taskElementProperties);
       taskDefinition.setCandidateOrgIdExpressions(activeCandidateOrgExpressions);
       
     } else {
@@ -127,7 +127,7 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
       activeOrgExpression = taskDefinition.getOrgExpression();
       activeCandidateUserExpressions = taskDefinition.getCandidateUserIdExpressions();
       activeCandidateGroupExpressions = taskDefinition.getCandidateGroupIdExpressions();
-      activeCandidateOrgExpressions = taskDefinition.getCandidateOrgExpressions();
+      activeCandidateOrgExpressions = taskDefinition.getCandidateOrgIdExpressions();
     }
     
     task.setTaskDefinition(taskDefinition);

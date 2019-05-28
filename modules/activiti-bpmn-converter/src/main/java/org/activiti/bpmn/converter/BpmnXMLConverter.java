@@ -516,7 +516,7 @@ public class BpmnXMLConverter implements BpmnXMLConstants {
           // empty process, ignore it 
           continue;
         }
-      
+        // json usertask 解析为xml
         ProcessExport.writeProcess(process, xtw);
         
         for (FlowElement flowElement : process.getFlowElements()) {

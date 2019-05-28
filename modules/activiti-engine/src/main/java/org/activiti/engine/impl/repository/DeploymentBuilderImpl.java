@@ -109,6 +109,7 @@ public class DeploymentBuilderImpl implements DeploymentBuilder, Serializable {
   public DeploymentBuilder addBpmnModel(String resourceName, BpmnModel bpmnModel) {
     BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
     try {
+      // json 转 xml
       String bpmn20Xml = new String(bpmnXMLConverter.convertToXML(bpmnModel), "UTF-8");
       addString(resourceName, bpmn20Xml);
     } catch (UnsupportedEncodingException e) {
