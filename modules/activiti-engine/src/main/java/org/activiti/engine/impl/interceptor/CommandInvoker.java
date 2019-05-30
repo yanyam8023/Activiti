@@ -12,14 +12,13 @@
  */
 package org.activiti.engine.impl.interceptor;
 
-import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.context.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author Tom Baeyens
- * 命令执行
+ * 执行命令请求
  */
 public class CommandInvoker extends AbstractCommandInterceptor {
 
@@ -27,7 +26,7 @@ public class CommandInvoker extends AbstractCommandInterceptor {
 
   @Override
   public <T> T execute(CommandConfig config, Command<T> command) {
-    log.debug("⑤执行了"+config+"命令为："+command);
+    log.debug("⑤执行了"+config+"命令请求为："+command);
     return command.execute(Context.getCommandContext());
   }
 

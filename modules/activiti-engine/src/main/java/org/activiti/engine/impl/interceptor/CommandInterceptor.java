@@ -14,6 +14,7 @@
 package org.activiti.engine.impl.interceptor;
 
 /**
+ * 执行命令请求的抽象
  * @author Tom Baeyens
  */
 public interface CommandInterceptor {
