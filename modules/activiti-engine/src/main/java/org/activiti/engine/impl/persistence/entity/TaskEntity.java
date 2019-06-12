@@ -417,10 +417,20 @@ public class TaskEntity extends VariableScopeImpl implements Task, DelegateTask,
   public void addCandidateGroup(String groupId) {
     addIdentityLink(null, groupId, IdentityLinkType.CANDIDATE);
   }
-  
+
   public void addCandidateGroups(Collection<String> candidateGroups) {
     for (String candidateGroup : candidateGroups) {
       addCandidateGroup(candidateGroup);
+    }
+  }
+
+  public void addCandidateOrg(String groupId) {
+    addIdentityLink(null, groupId, IdentityLinkType.CANDIDATE_ORG);
+  }
+
+  public void addCandidateOrgs(Collection<String> candidateOrgs) {
+    for (String candidateGroup : candidateOrgs) {
+      addCandidateOrg(candidateGroup);
     }
   }
   

@@ -307,9 +307,9 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
         Object value = orgIdExpr.getValue(execution);
         if (value instanceof String) {
           List<String> candiates = extractCandidates((String) value);
-          task.addCandidateGroups(candiates);
+          task.addCandidateOrgs(candiates);
         } else if (value instanceof Collection) {
-          task.addCandidateGroups((Collection) value);
+          task.addCandidateOrgs((Collection) value);
         } else {
           throw new ActivitiException("Expression did not resolve to a string or collection of strings");
         }
